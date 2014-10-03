@@ -1,0 +1,380 @@
+{
+	"paragraphs": [
+		{
+			"sentences": [
+				{
+					"words": [
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg n",
+									"partofspeech": "P",
+									"root": "iga_üks"
+								}
+							],
+							"text": "Igaüks,"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "pl n",
+									"partofspeech": "P",
+									"root": "kes"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg n",
+									"partofspeech": "P",
+									"root": "kes"
+								}
+							],
+							"text": "kes"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg g",
+									"partofspeech": "S",
+									"root": "traktor"
+								}
+							],
+							"text": "traktori"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "D",
+									"root": "eest"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "K",
+									"root": "eest"
+								},
+								{
+									"clitic": "",
+									"ending": "st",
+									"form": "sg el",
+									"partofspeech": "S",
+									"root": "esi"
+								}
+							],
+							"text": "eest"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg n",
+									"partofspeech": "N",
+									"root": "miljon"
+								}
+							],
+							"text": "miljon"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "adt",
+									"partofspeech": "S",
+									"root": "kroon"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg g",
+									"partofspeech": "S",
+									"root": "kroon"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "o",
+									"partofspeech": "V",
+									"root": "krooni"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg p",
+									"partofspeech": "S",
+									"root": "kroon"
+								}
+							],
+							"text": "krooni"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "le",
+									"form": "sg all",
+									"partofspeech": "S",
+									"root": "laud"
+								}
+							],
+							"text": "lauale"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "b",
+									"form": "b",
+									"partofspeech": "V",
+									"root": "ladu"
+								}
+							],
+							"text": "laob,"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "b",
+									"partofspeech": "V",
+									"root": "ole"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "vad",
+									"partofspeech": "V",
+									"root": "ole"
+								}
+							],
+							"text": "on"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "tud",
+									"form": "tud",
+									"partofspeech": "V",
+									"root": "huvita"
+								},
+								{
+									"clitic": "",
+									"ending": "d",
+									"form": "pl n",
+									"partofspeech": "S",
+									"root": "huvitatu"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "A",
+									"root": "huvitatud"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg n",
+									"partofspeech": "A",
+									"root": "huvitatud"
+								},
+								{
+									"clitic": "",
+									"ending": "d",
+									"form": "pl n",
+									"partofspeech": "A",
+									"root": "huvitatud"
+								}
+							],
+							"text": "huvitatud"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "st",
+									"form": "sg el",
+									"partofspeech": "P",
+									"root": "see"
+								}
+							],
+							"text": "sellest,"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "J",
+									"root": "et"
+								}
+							],
+							"text": "et"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg n",
+									"partofspeech": "S",
+									"root": "traktor"
+								}
+							],
+							"text": "traktor"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "taks",
+									"form": "taks",
+									"partofspeech": "V",
+									"root": "meenu"
+								},
+								{
+									"clitic": "",
+									"ending": "ks",
+									"form": "ks",
+									"partofspeech": "V",
+									"root": "meenuta"
+								}
+							],
+							"text": "meenutaks"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "te",
+									"form": "pl g",
+									"partofspeech": "S",
+									"root": "lisa_võimalus"
+								}
+							],
+							"text": "lisavõimaluste"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "st",
+									"form": "sg el",
+									"partofspeech": "N",
+									"root": "pool"
+								},
+								{
+									"clitic": "",
+									"ending": "st",
+									"form": "sg el",
+									"partofspeech": "S",
+									"root": "pool"
+								},
+								{
+									"clitic": "",
+									"ending": "t",
+									"form": "sg p",
+									"partofspeech": "A",
+									"root": "poolene"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "K",
+									"root": "poolest"
+								}
+							],
+							"text": "poolest"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "lt",
+									"form": "sg abl",
+									"partofspeech": "A",
+									"root": "võimalik"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "D",
+									"root": "võimalikult"
+								}
+							],
+							"text": "võimalikult"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "D",
+									"root": "palju"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg g",
+									"partofspeech": "P",
+									"root": "palju"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg n",
+									"partofspeech": "P",
+									"root": "palju"
+								}
+							],
+							"text": "palju"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "adt",
+									"partofspeech": "S",
+									"root": "kosmose_laev"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg g",
+									"partofspeech": "S",
+									"root": "kosmose_laev"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg p",
+									"partofspeech": "S",
+									"root": "kosmose_laev"
+								}
+							],
+							"text": "kosmoselaeva."
+						}
+					]
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,155 @@
+<project name="Osalau" default="dist" basedir=".">
+  <description>
+     Osalausestamise programmi ehitusskript
+  </description>
+
+  <condition property="isWindows">  
+      <os family="windows" />  
+  </condition>
+  <condition property="isUNIX">  
+      <os family="unix" />  
+  </condition>
+  
+  <!-- lokaalne konfiguratsioon failist -->
+  <property file="build.properties"/> 
+  
+  <!-- globaalsed vaartused -->
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist"  location="dist"/>
+  <property name="lib"   location="lib"/>
+  <!-- kaust, kuhu laheb testimisk6lbulik rakendus -->
+  <property name="deploydir" location="test"/>
+
+  <target name="tasks">
+    <!-- Kuvame k6igi kaskude nimekirja -->
+    <echo/>
+    <echo message="  Osalausestaja"/>
+    <echo/>
+    <echo message=" Most important tasks:${line.separator}"/>
+    <echo message="  compile   - compiles the source and places into the build-dir;${line.separator}"/>
+    <echo message="  dist      - creates a distribution of program${line.separator}"/>
+    <echo message="              (JAR + necessary files) (under Windows);${line.separator}"/>
+    <echo message="  dist-unix - creates the distribution under UNIX;"/>
+    <echo message="  deploy    - deploys the distribution into test-dir;${line.separator}"/>
+    <echo message="  clean     - deletes build-dir and dist-dir;${line.separator}"/>
+    <echo/>
+  </target>
+    
+  <target name="init">
+    <!-- Loome ajatempli -->
+    <tstamp/>
+    <!-- Loome kataloogistruktuuri, kuhu paigutatakse 
+         kompileeritud java klassid -->
+    <mkdir dir="${build}"/>
+  </target>
+
+  <!-- ====================================================================== -->
+  <!--         K o m p i l e e r i m i n e                                    -->
+  <!-- ====================================================================== -->
+
+  <target name="compile" depends="init" 
+        description="kompileeri l2htekood" >
+    <!-- Kompileerime ${src} kaustas paikneva l2htekoodi, paigutame
+         tulemuse kausta ${build} -->
+    <!-- reanumbrid erindis: debug="on" debuglevel="lines,vars,source" -->
+    <javac debug="on" debuglevel="lines,vars,source" includeantruntime="false" target="1.7" source="1.7" srcdir="${src}" destdir="${build}" 
+           fork="yes" executable="${java.home.location}/bin/javac" >
+        <compilerarg line="-encoding utf-8"/>
+        <classpath>
+           <pathelement location="lib/javax.json-1.0.4.jar"/>
+        </classpath>
+    </javac>
+  </target>
+
+  <!-- ====================================================================== -->
+  <!--         D i s t r i b u t e e r i m i n e                              -->
+  <!-- ====================================================================== -->
+
+  <target name="dist" depends="compile"
+          description="genereeri programmi distributsioon (win)" 
+          if="isWindows" >
+    <!-- Loome distributsiooni kataloogi -->
+    <mkdir dir="${dist}"/>
+
+    <!-- Loome .JAR faili tarvis manifesti -->
+    <manifest file="${dist}/MANIFEST.MF">
+        <attribute name="Main-Class" value="ee.ut.soras.osalau.Main"/>
+        <attribute name="Class-Path" value="javax.json-1.0.4.jar"/>
+    </manifest>
+
+    <!-- Paigutame k6ik kaustas ${build} asuva .JAR faili -->
+    <jar jarfile="${dist}/Osalau.jar" manifest="${dist}/MANIFEST.MF">
+        <fileset dir="${build}">
+           <!-- <exclude name="**/ajavt/**"/> -->
+        </fileset> 
+    </jar>    
+
+    <!-- anname .JAR failiga kaasa vajaminevad ressurssfailid -->
+    <copy todir="${dist}" overwrite="true">
+        <fileset dir="${lib}">
+           <include name="*.jar"/>
+           <exclude name="junit-*.jar"/>
+           <exclude name="hamcrest-core-*.jar"/>
+        </fileset>
+    </copy>
+    <!-- Kustutame manifesti kaustast ${dist} - 
+         seal me seda enam ei vaja -->
+    <delete file="${dist}/MANIFEST.MF"/>
+  </target>
+
+  <target name="dist-unix" depends="compile"
+            description="genereeri programmi distributsioon (unix)" 
+            if="isUNIX" >
+      <!-- Loome distributsiooni kataloogi -->
+      <mkdir dir="${dist}"/>
+
+      <!-- Loome .JAR faili tarvis manifesti -->
+      <manifest file="${dist}/MANIFEST.MF">
+          <attribute name="Main-Class" value="ee.ut.soras.osalau.Main"/>
+          <attribute name="Class-Path" value="javax.json-1.0.4.jar"/>
+      </manifest>
+
+      <!-- Paigutame k6ik kaustas ${build} asuva .JAR faili -->
+      <jar jarfile="${dist}/Osalau.jar" manifest="${dist}/MANIFEST.MF">
+           <fileset dir="${build}">
+               <!-- <exclude name="**/ajavt/**"/> -->
+           </fileset> 
+      </jar>
+
+      <!-- anname .JAR failiga kaasa vajaminevad ressurssfailid -->
+      <copy todir="${dist}" overwrite="true">
+            <fileset dir="${lib}">
+               <include name="*.jar"/>
+               <exclude name="junit-*.jar"/>
+               <exclude name="hamcrest-core-*.jar"/>
+            </fileset>
+            <fileset dir="${resdir}" includes="*.xml"/>
+            <!-- <fileset dir="${resdir}/skriptid/unix" includes="*.sh"/> -->
+      </copy>
+      
+      <!-- Kustutame manifesti kaustast ${dist} - 
+           seal me seda enam ei vaja -->
+      <delete file="${dist}/MANIFEST.MF"/>
+  </target>
+
+  <target name="deploy" depends="dist, dist-unix"
+        description="paigalda distributsioon testkataloogi" >
+        <copy todir="${deploydir}" overwrite="true">
+              <fileset dir="${dist}" includes="*.*"/>
+        </copy>
+  </target>
+
+  <!-- ====================================================================== -->
+  <!--     P u h a s t u s                                                    -->
+  <!-- ====================================================================== -->
+
+  <target name="clean"
+        description="kustuta genereeritud distributsioon" >
+     <!-- Kustutame ${build}, ${dist} ning ${jdoc} kataloogid -->
+     <delete dir="${build}"/>
+     <delete dir="${dist}"/>
+     <delete dir="${jdoc}"/>
+  </target>
+	
+</project>
