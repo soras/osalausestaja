@@ -30,7 +30,7 @@
      -- PyVabamorf:        https://github.com/tpetmanson/pyvabamorf
      -- T3MESTA (a commercial morphological analyzer);
   ** Estonian morphological disambiguator;
-     (currently not available)
+     (currently not freely available)
      NB! The clause segmenter also works on morphologically ambiguous 
         input, but the quality of the analysis is expected to be worse 
         than in the case of morphologically disambiguated text.

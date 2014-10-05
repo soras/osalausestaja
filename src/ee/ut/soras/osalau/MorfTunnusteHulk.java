@@ -164,6 +164,10 @@ public class MorfTunnusteHulk {
 			MorfAnRida morfAnRida2 = (otherMorphFeatures.tunnused).get(0);
 			String formNames1 = morfAnRida1.getVormiNimetused();
 			String formNames2 = morfAnRida2.getVormiNimetused();
+			//
+			//  TODO: siin on praegu lahtine, kas yhtimiseks tuleks lugeda ka juht, kui m6lemad
+			//  vorminimetused on tyhis6ned, nt s6naliikide _Z_ ja _D_ korral;
+			//
 			return (formNames1 != null && formNames2 != null && formNames1.equals(formNames2));
 		}
 		return false;

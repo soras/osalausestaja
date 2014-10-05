@@ -91,7 +91,8 @@ public class Osalausestaja {
 		lausedOsalaused = TekstiFiltreerimine.jagaKindlatePiirideKohalt( laused );
 
 		// 12) Teisendame osalauseid kiiludeks
-		teisendaKiiludeks( laused );
+		//     Eemaldame lause l6pust kindlad piirid (kui kogemata on kindlaid piire sattunud lausel6ppu)
+		teisendaKiiludeks( laused, true );
 		
 		return osalauSonad;
 	}
@@ -124,6 +125,7 @@ public class Osalausestaja {
 	 *   leidub kindlasti ka vastav sulgev sulg.
 	 */
 	private void lisaSulgudeKindladPiirid( List<List<OsalauSona>> laused ){
+		SonaMall suludOnYmber = new SonaMall( Pattern.compile("^\\(.+\\)[.,;!?]*$") );
 		// Tootleme sisendit lause-lause haaval
 		for (List<OsalauSona> lause : laused) {
 			//  Seal, kus sulgude paarsus klapib (avavale sulule leidub vastav sulgev sulg)
@@ -138,10 +140,26 @@ public class Osalausestaja {
 					} else if (algSona.charAt(j) == ')' && !avavadSulud.isEmpty()) {
 						Integer indeks = avavadSulud.pop();
 						OsalauSona suluAlgusSona = lause.get( indeks );
-						// Kuna leidus avavale sulule vastav sulgev sulg, siis
-						// lisame m6lemale s6nale kiilum2rgendid
-						suluAlgusSona.lisaMargend(OsalauSona.MARGEND.KIILU_ALGUS);
-						(lause.get( i )).lisaMargend(OsalauSona.MARGEND.KIILU_LOPP);
+						boolean voibKiilunaEraldada = true;
+						if (indeks == i){
+							try {
+								//  Kui sulud algavad samas s6nas, milles need l6pevadki, kontrollime,
+								//  et tegemist poleks juhtudega, kus sulge kasutatakse s6na sees, nt
+								//       raamatukogu(de), (aja)kirjanduslikust, või(s)tlus  jms
+								//  Lubame kiilude eraldamist vaid juhtudel, kui sulud paiknevad nii 
+								//  s6na alguses kui ka l6pus, nt  (1998), (Riigikogu) 
+								voibKiilunaEraldada = suludOnYmber.vastabMallileAND(suluAlgusSona);
+							} catch (Exception e) {
+								e.printStackTrace();
+								System.exit(-1);
+							}
+						}
+						if (voibKiilunaEraldada){
+							// Kuna leidus avavale sulule vastav sulgev sulg, siis
+							// lisame m6lemale s6nale kiilum2rgendid
+							suluAlgusSona.lisaMargend(OsalauSona.MARGEND.KIILU_ALGUS);
+							(lause.get( i )).lisaMargend(OsalauSona.MARGEND.KIILU_LOPP);							
+						}
 					}
 				}
 			}
@@ -474,12 +492,12 @@ public class Osalausestaja {
 					OsalauSona sona = lause.get(i);
 					if (koikJutuMargid.vastabMallileOR(sona) && sona.omabMargendit(MARGEND.OLETATAV_PIIR)){
 						sona.eemaldaMargend(MARGEND.OLETATAV_PIIR);
-						//   NB! HJK-l oli siin veel m2rkus, et lause algusesse/l6ppu tuleks j2tta " alles j2tta,
-						//       et kindlad_lahku (jagaKindlatePiirideKohalt) saaks 6igesti t88tada, aga see j2i 
-						//       arusaamatuks ...
+						//   NB! HJK-l oli siin veel m2rkus, et lause algusesse/l6ppu tuleks " alles j2tta,
+						//       et kindlad_lahku (jagaKindlatePiirideKohalt) saaks 6igesti t88tada, aga see 
+						//       j2i arusaamatuks ...
 					}
 				}
-				// System.out.println( TekstiFiltreerimine.debugMargendustegaLause(lause, false) );
+				//System.out.println( TekstiFiltreerimine.debugMargendustegaLause(lause, false) );
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -492,7 +510,7 @@ public class Osalausestaja {
 	 *   ** Eemalda osalausepiir _N_ : _N_ vahelt (nt "12 : 55")<br>
 	 *   ** Eemalda osalausepiir kriipsuga l6ppeva s6na j2relt (nt "puu- ja köögivili")<br>
 	 *   ** Kui mitu lausel6pum2rki on yksteise j2rel, j2ta alles viimase piir (nt "Mida ?! ? !")<br>
-	 *   ** M2rgista semikoolon ; ja koolon : kui kindlad osalausepiirid; 
+	 *   ** M2rgista semikoolon ; ja koolon : kui kindlad osalausepiirid;
 	 */
 	private void eemaldaOletuslikudPiirid1(List<List<OsalauSona>> tykeldus) {
 		SonaMall koolonLopus      = new SonaMall( Pattern.compile("^.*:$") );
@@ -500,8 +518,10 @@ public class Osalausestaja {
 		SonaMall ainultkirjaVM    = new SonaMall( Pattern.compile("^[.?!]{1,}$") );
 		SonaMall kirjaVMLopus     = new SonaMall( Pattern.compile("^.*[.?!]{1,}$") );
 		SonaMall koolonSemiKLopus = new SonaMall( Pattern.compile("^.*[;:]$") );
+		SonaMall initsiaalid      = new SonaMall( Pattern.compile("^([A-Z\u0160\u017D\u00D5\u00C4\u00D6\u00DC-]+\\.)+:?$") );
 		try {
 			// Tootleme sisendit seni eraldatud osalausete haaval
+			OsalauSona eelmineSona = null;
 			for (List<OsalauSona> osalause : tykeldus) {
 				for (int i = 0; i < osalause.size(); i++) {
 					OsalauSona sona = osalause.get(i);
@@ -549,6 +569,22 @@ public class Osalausestaja {
 						sona.eemaldaMargend( MARGEND.OLETATAV_PIIR );
 						sona.lisaMargend( MARGEND.KINDEL_PIIR );
 					}
+					//
+					//  5. Initsiaalid (E.K., I.P., H., E.-K.R. jms) koos j2rgneva kooloniga lause alguses on kindel 
+					//     piir (k6ne v6i repliigi algus)
+					//
+					if (eelmineSona == null || (eelmineSona.getMorfSona()).onLauseLopp()){
+						if (initsiaalid.vastabMallileAND(sona)){
+							if (koolonSemiKLopus.vastabMallileAND(sona)){
+								sona.eemaldaMargend(MARGEND.OLETATAV_PIIR);
+								sona.lisaMargend(MARGEND.KINDEL_PIIR);
+							} else if (i+1 < osalause.size() && koolonSemiKLopus.vastabMallileAND(osalause.get(i+1))){
+								(osalause.get(i+1)).eemaldaMargend(MARGEND.OLETATAV_PIIR);
+								(osalause.get(i+1)).lisaMargend(MARGEND.KINDEL_PIIR);
+							}
+						}
+					}
+					eelmineSona = sona;
 				}
 				//System.out.println( TekstiFiltreerimine.debugMargendustegaLause(osalause, false) );
 			}
@@ -962,7 +998,7 @@ public class Osalausestaja {
 					}
 					/// 
 					///   kui lause või osalause algab 'kui' v6i 'et'-iga:
-					///    TODO: v6imalik, et alljärgnevat loogikat saab veel refaktoreerida 
+					///   TODO: v6imalik, et alljärgnevat loogikat saab veel refaktoreerida 
 					///
 					if (i == 0){
 						MorfTunnusteHulk tunnused = new MorfTunnusteHulk( osalause.get(i) );
@@ -1163,7 +1199,7 @@ public class Osalausestaja {
 	/**
 	 *   Osalausete teisendamine kiiludeks;
 	 */
-	private void teisendaKiiludeks(List<List<OsalauSona>> laused) {
+	private void teisendaKiiludeks(List<List<OsalauSona>> laused, boolean eemaldaLauseL6pustKindelPiir) {
 		try{
 			SonaMall koikpiirid = new SonaMall( MARGEND.KINDEL_PIIR );
 			koikpiirid.lisaVajalikMargend( MARGEND.KIILU_ALGUS );
@@ -1266,6 +1302,18 @@ public class Osalausestaja {
 							//        st saaks refaktoreerida; 
 							//
 						}
+					}
+					//
+					//   Eemaldame lause viimase s6na l6pust kindla piiri.
+					//   Seda l2heb t6en2oliselt tarvis siis, kui lausestamisel on mingi segadus tekkinud ja 
+					//   on lausepiir t6mmatud kohtadesse, kus t6en2oliselt peaks olema ka osalausepiir, nt
+					//   kooloni/jutum2rkide j2rele:
+					//        Õhtul vahest saab : " 
+					//        Käepigistus oli päris soe : "
+					//        " Ma praen kõik margariiniga : "
+					//
+					if (i == lause.size()-1 && eemaldaLauseL6pustKindelPiir && kindelpiir.vastabMallileAND(sona)){
+						sona.eemaldaMargend(MARGEND.KINDEL_PIIR);
 					}
 				}
 				//System.out.println( TekstiFiltreerimine.debugMargendustegaLause(lause, false) );
