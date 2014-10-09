@@ -124,7 +124,6 @@
                <exclude name="junit-*.jar"/>
                <exclude name="hamcrest-core-*.jar"/>
             </fileset>
-            <fileset dir="${resdir}" includes="*.xml"/>
             <!-- <fileset dir="${resdir}/skriptid/unix" includes="*.sh"/> -->
       </copy>
       
