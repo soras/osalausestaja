@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import ee.ut.soras.wrappers.TextUtilsForMorph;
 import ee.ut.soras.wrappers.mudel.MorfAnSona;
 
 /**
@@ -21,13 +22,19 @@ public class OsalauSona {
 	// ======================================================
 	
 	private MorfAnSona morfSona = null;
+	private String normAlgSona = null;
 	
 	public OsalauSona(MorfAnSona morfSona) {
 		this.morfSona = morfSona;
+		this.normAlgSona = TextUtilsForMorph.normalizeSpecialSymbols( (this.morfSona).getAlgSona() );
 	}
 
 	public MorfAnSona getMorfSona() {
 		return morfSona;
+	}
+	
+	public String getNormAlgSona() {
+		return normAlgSona;
 	}
 	
 	// ======================================================

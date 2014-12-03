@@ -90,9 +90,7 @@ public class TextUtilsForMorph {
 		input = input.replaceAll("&(amp|#38);", "&");
 		input = input.replaceAll("&(lt|#60);", "<");
 		input = input.replaceAll("&(gt|#62);", ">");
-		// 3. Viime õ ühtsele kujule - esialgu paistab, et see on tarbetu
-		//input = input.replaceAll("(\u014D|\u00F4|\u01D2)", "\u00F5"); // väike õ  
-		//input = input.replaceAll("(\u00D4|\u014C|\u01D1)", "\u00D5"); // suur Õ
+		// 3. TODO: vajadusel lisada siia ka HTML/XML vms tag'ide v2ljaviskamine
 		return input;
 	}
 

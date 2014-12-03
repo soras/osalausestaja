@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import ee.ut.soras.osalau.OsalauSona.MARGEND;
-import ee.ut.soras.wrappers.mudel.MorfAnSona;
 
 /**
  *  Yhte <code>OsalauSona</code> kirjeldav s6namall. V6imaldab mitmesuguste tunnuste 
@@ -72,8 +71,7 @@ public class SonaMall {
 			}
 		}
 		if (this.tekstikujuKirjeldused != null){
-			MorfAnSona morfSona = sona.getMorfSona();
-			String tekstikuju   = morfSona.getAlgSona();
+			String tekstikuju = sona.getNormAlgSona();
 			// Kontrollime, kas s6na vastab k6igile n6utud regulaaravaldistele
 			if (tekstikuju != null){
 				for (Pattern regexp : this.tekstikujuKirjeldused) {
@@ -107,8 +105,7 @@ public class SonaMall {
 			}
 		}
 		if (this.tekstikujuKirjeldused != null){
-			MorfAnSona morfSona = sona.getMorfSona();
-			String tekstikuju   = morfSona.getAlgSona();
+			String tekstikuju = sona.getNormAlgSona();
 			// Kontrollime, kas s6na vastab v2hemalt yhele n6utud regulaaravaldistele
 			if (tekstikuju != null){
 				for (Pattern regexp : this.tekstikujuKirjeldused) {

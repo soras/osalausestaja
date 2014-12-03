@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.io.StringReader;
 import java.util.List;
 import java.util.Scanner;
@@ -137,17 +138,24 @@ public class Main {
 			try {
 				// ---- V6tame sisendi standardsisendist
 				Scanner sc = new Scanner(System.in, "UTF-8");
+				PrintStream ps = new PrintStream(System.out, false, "UTF-8");
 				while ( sc.hasNextLine() ) {
 					String line = sc.nextLine();
 					if ((emptyString.matcher(line)).matches()){
-						System.out.println(line);
-						System.out.flush();
+						ps.println( line );
+						ps.flush();
+						//System.out.println(line);
+						//System.out.flush();
 					} else {
 						String result = osalausestaja.osalausestaPyVabamorfJSON(line);
-						System.out.println(result);
-						System.out.flush();
+						ps.println( result );
+						ps.flush();
+						//System.out.println(result);
+						//System.out.flush();
 					}
-				}		
+				}
+				sc.close();
+				ps.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(-1);
@@ -218,7 +226,11 @@ public class Main {
 				}
 			}
 			if (outputType.equalsIgnoreCase("stdout")){
-				System.out.print( valjundSone ); 
+				PrintStream ps = new PrintStream(System.out, false, "UTF-8");
+				ps.print( valjundSone );
+				ps.flush();
+				ps.close();
+				//System.out.print( valjundSone ); 
 			} else if (outputType.equalsIgnoreCase("file") && outputFile != null){
 				printIntoFile(valjundSone, "UTF-8", outputFile);
 			}

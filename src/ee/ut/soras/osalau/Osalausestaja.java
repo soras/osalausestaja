@@ -132,8 +132,7 @@ public class Osalausestaja {
 			//  m2rgendame osalausepiiri
 			Stack<Integer> avavadSulud = new Stack<Integer>();
 			for (int i = 0; i < lause.size(); i++) {
-				MorfAnSona sona = (lause.get( i )).getMorfSona();
-				String  algSona = (sona.getAlgSona());
+				String algSona = (lause.get( i )).getNormAlgSona();
 				for (int j = 0; j < algSona.length(); j++) {
 					if (algSona.charAt(j) == '('){
 						avavadSulud.push( i );
@@ -252,9 +251,8 @@ public class Osalausestaja {
 						if (!(verbiTunnused.filterByFormNames("^\\s*(des),?\\s*$")).isEmpty()){
 							if (i - 2 >= 0){
 								try {
-									MorfAnSona eelmineSona = (lause.get(i-1)).getMorfSona();
-									if ( eelmineSona.getAlgSona() != null && 
-											(eelmineSona.getAlgSona()).equals("mitte") && 
+									if ( (lause.get(i-1)).getNormAlgSona() != null && 
+											((lause.get(i-1)).getNormAlgSona()).equals("mitte") && 
 												onKomaLopus.vastabMallileAND( lause.get(i-2) )){
 										(lause.get( i )).lisaMargend( MARGEND.OELDIS );
 									}
@@ -275,8 +273,7 @@ public class Osalausestaja {
 							} else {
 								// Kui s6na pole lause alguses, loeme 8eldiseks, kui algab
 								// suurtähega (kuna v6ib olla tegu lausestamise veaga ...)
-								MorfAnSona morfSona = (lause.get( i )).getMorfSona();
-								String algSona = morfSona.getAlgSona();
+								String algSona = (lause.get( i )).getNormAlgSona();
 								// Kontrollime, et s6na algaks suurt2hega
 								if (algSona != null && algSona.matches("^[ABCDEFGHIJKLMNOPRS\u0160\u017DTUV\u00D5\u00C4\u00D6\u00DC].*")){
 									(lause.get( i )).lisaMargend( MARGEND.OELDIS );
@@ -313,8 +310,7 @@ public class Osalausestaja {
 		// Tootleme sisendit lause-lause haaval
 		for (List<OsalauSona> lause : laused) {
 			for (int i = 0; i < lause.size(); i++) {
-				MorfAnSona sona = (lause.get(i)).getMorfSona();
-				String algSona = sona.getAlgSona();
+				String algSona = (lause.get(i)).getNormAlgSona();
 				if (algSona != null && (i != 0) && (i != lause.size()-1)){
 					// 1) m2rgime lause keskel (väiksetähelised) ja/ning/ega/või oletatavateks piirideks
 					if (algSona.matches("^(ja|ning|ega|v\u014Di|v\u00F5i)$")){
@@ -389,16 +385,14 @@ public class Osalausestaja {
 				// M2rgistame otsese k6ne alguse ja l6pu kui kindlad osalausepiirid;
 				//
 				for (int i = 0; i < lause.size(); i++) {
-					OsalauSona sona     = lause.get(i);
-					MorfAnSona morfSona = sona.getMorfSona();
-					String tekstiSona   = morfSona.getAlgSona();
+					OsalauSona sona   = lause.get(i);
+					String tekstiSona = sona.getNormAlgSona();
 					// 1) Kui koolon on alustavate jutum2rkide ees, ning koolonile eelneb
 					//    (ilma osalausepiirideta) oeldis, siis on alustavad jutum2rgid kindel 
 					//    osalausepiir ...
 					if (tekstiSona.matches("^.*:$") && sona.omabMargendit(MARGEND.OLETATAV_PIIR)){
 						if (i+1 < lause.size()){
-							MorfAnSona morfSona2 = (lause.get( i+1 )).getMorfSona();
-							String tekstiSona2   = morfSona2.getAlgSona();
+							String tekstiSona2 = (lause.get( i+1 )).getNormAlgSona();
 							if ((koneAlgusJutumark.matcher(tekstiSona2)).matches()){
 								// Kontrollime, kas eelneb (t6en2oliselt) k6nelemise (REPORTING) verb 
 								// ning vahel pole keelatud m2rgendeid:
@@ -417,8 +411,7 @@ public class Osalausestaja {
 					// osalausepiir ...
 					if (tekstiSona.matches("^.*[,;.?!]$") && sona.omabMargendit(MARGEND.OLETATAV_PIIR)){
 						if (i+1 < lause.size()){
-							MorfAnSona morfSona2 = (lause.get( i+1 )).getMorfSona();
-							String tekstiSona2   = morfSona2.getAlgSona();
+							String tekstiSona2 = (lause.get( i+1 )).getNormAlgSona();
 							if ((koneLoppJutumark.matcher(tekstiSona2)).matches()){
 								int j = TekstiFiltreerimine.jargnebMargendigaSona(lause, i+1, oeldis, osalausepiir );
 								if (j > -1){
@@ -534,7 +527,7 @@ public class Osalausestaja {
 								!(j2rgmSonaTunnused.filterByPOS("_O_")).isEmpty()){
 							// J2rgmine s6na on arv/number -- kontrollime ka seda v6i eelmist s6na ...
 							MorfTunnusteHulk eelSonaTunnused = null; 
-							if (((sona.getMorfSona()).getAlgSona()).length() > 1){
+							if ((sona.getNormAlgSona()).length() > 1){
 								eelSonaTunnused = new MorfTunnusteHulk( sona );
 							} else if (i - 1 > -1) {
 								eelSonaTunnused = new MorfTunnusteHulk( osalause.get(i-1) );
@@ -662,8 +655,8 @@ public class Osalausestaja {
 						// 5. kui komale/sidekriipsule järgneb vahetult suvaline s6na ja seej2rel et, siis märgi kindel piir;
 						//
 						if (i+2 < osalause.size() && 
-							(osalause.get(i+2).getMorfSona()).getAlgSona() != null &&
-								((osalause.get(i+2).getMorfSona()).getAlgSona()).equals("et")){
+							(osalause.get(i+2).getNormAlgSona()) != null &&
+								((osalause.get(i+2).getNormAlgSona())).equals("et")){
 							//
 							//    Tähelepanek #1: Kui komale/sidekriipsule j2rgnebki mingi teine kirjavahem2rk, ja seej2rel
 							//              "et", nt lauses: 
@@ -1152,8 +1145,8 @@ public class Osalausestaja {
 					OsalauSona sona = osalause.get(i);
 					if (oletatavpiir.vastabMallileAND(sona)){
 						String sidend = "";
-						if (sona.getMorfSona() != null && (sona.getMorfSona()).getAlgSona() != null){
-							sidend = (sona.getMorfSona()).getAlgSona();
+						if (sona.getNormAlgSona() != null ){
+							sidend = sona.getNormAlgSona();
 						}
 						MorfTunnusteHulk esimeseSonaTunnused = null;
 						MorfTunnusteHulk teiseSonaTunnused   = null;
