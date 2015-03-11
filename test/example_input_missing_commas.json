@@ -1,0 +1,431 @@
+{
+	"paragraphs": [
+		{
+			"sentences": [
+				{
+					"words": [
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "d",
+									"form": "pl n",
+									"partofspeech": "S",
+									"root": "pritsi_mees"
+								}
+							],
+							"text": "Pritsimehed"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "sid",
+									"form": "sid",
+									"partofspeech": "V",
+									"root": "leid"
+								}
+							],
+							"text": "leidsid"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "D",
+									"root": "eest"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "K",
+									"root": "eest"
+								},
+								{
+									"clitic": "",
+									"ending": "st",
+									"form": "sg el",
+									"partofspeech": "S",
+									"root": "esi"
+								}
+							],
+							"text": "eest"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg g",
+									"partofspeech": "A",
+									"root": "lõõmav"
+								}
+							],
+							"text": "lõõmava"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "ga",
+									"form": "sg kom",
+									"partofspeech": "A",
+									"root": "kapoti_alune"
+								}
+							],
+							"text": "kapotialusega"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg g",
+									"partofspeech": "S",
+									"root": "auto"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg n",
+									"partofspeech": "S",
+									"root": "auto"
+								}
+							],
+							"text": "auto"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "da",
+									"form": "pl p",
+									"partofspeech": "P",
+									"root": "mis"
+								},
+								{
+									"clitic": "",
+									"ending": "da",
+									"form": "sg p",
+									"partofspeech": "P",
+									"root": "mis"
+								}
+							],
+							"text": "mida"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "s",
+									"form": "sg in",
+									"partofspeech": "S",
+									"root": "lähedus"
+								}
+							],
+							"text": "läheduses"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "nud",
+									"form": "nud",
+									"partofspeech": "V",
+									"root": "parki"
+								},
+								{
+									"clitic": "",
+									"ending": "d",
+									"form": "pl n",
+									"partofspeech": "S",
+									"root": "parki=nu"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "A",
+									"root": "parki=nud"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg n",
+									"partofspeech": "A",
+									"root": "parki=nud"
+								},
+								{
+									"clitic": "",
+									"ending": "d",
+									"form": "pl n",
+									"partofspeech": "A",
+									"root": "parki=nud"
+								}
+							],
+							"text": "parkinud"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "te",
+									"form": "pl g",
+									"partofspeech": "S",
+									"root": "masin"
+								}
+							],
+							"text": "masinate"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "d",
+									"form": "pl n",
+									"partofspeech": "S",
+									"root": "sohver"
+								}
+							],
+							"text": "sohvrid"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "D",
+									"root": "eemale"
+								}
+							],
+							"text": "eemale"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "sid",
+									"form": "sid",
+									"partofspeech": "V",
+									"root": "ürita"
+								}
+							],
+							"text": "üritasid"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "ta",
+									"form": "da",
+									"partofspeech": "V",
+									"root": "lükka"
+								},
+								{
+									"clitic": "",
+									"ending": "ta",
+									"form": "ta",
+									"partofspeech": "V",
+									"root": "lükka"
+								}
+							],
+							"text": "lükata"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "J",
+									"root": "kuid"
+								},
+								{
+									"clitic": "",
+									"ending": "id",
+									"form": "pl p",
+									"partofspeech": "S",
+									"root": "kuu"
+								}
+							],
+							"text": "kuid"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "D",
+									"root": "esi_algu"
+								}
+							],
+							"text": "esialgu"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg n",
+									"partofspeech": "P",
+									"root": "see"
+								}
+							],
+							"text": "see"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "D",
+									"root": "ei"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "neg",
+									"partofspeech": "V",
+									"root": "ei"
+								}
+							],
+							"text": "ei"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "nud",
+									"form": "nud",
+									"partofspeech": "V",
+									"root": "õnnestu"
+								},
+								{
+									"clitic": "",
+									"ending": "d",
+									"form": "pl n",
+									"partofspeech": "S",
+									"root": "õnnestu=nu"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "A",
+									"root": "õnnestunud"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg n",
+									"partofspeech": "A",
+									"root": "õnnestunud"
+								},
+								{
+									"clitic": "",
+									"ending": "d",
+									"form": "pl n",
+									"partofspeech": "A",
+									"root": "õnnestunud"
+								}
+							],
+							"text": "õnnestunud"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "st",
+									"form": "sg el",
+									"partofspeech": "P",
+									"root": "see"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "J",
+									"root": "sest"
+								}
+							],
+							"text": "sest"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "l",
+									"form": "sg ad",
+									"partofspeech": "S",
+									"root": "auto"
+								}
+							],
+							"text": "autol"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "i",
+									"form": "s",
+									"partofspeech": "V",
+									"root": "ole"
+								}
+							],
+							"text": "oli"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "sg n",
+									"partofspeech": "S",
+									"root": "käik"
+								}
+							],
+							"text": "käik"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "D",
+									"root": "sees"
+								},
+								{
+									"clitic": "",
+									"ending": "0",
+									"form": "",
+									"partofspeech": "K",
+									"root": "sees"
+								}
+							],
+							"text": "sees"
+						},
+						{
+							"analysis": [
+								{
+									"clitic": "",
+									"ending": "",
+									"form": "",
+									"partofspeech": "Z",
+									"root": "."
+								}
+							],
+							"text": "."
+						}
+					]
+				}
+			]
+		}
+	]
+}

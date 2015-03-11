@@ -48,8 +48,9 @@ public class Main {
 		System.out.println("  NB! Eeldatakse, et sisend on alati UTF-8 kodeeringus, valjundisse ");
 		System.out.println(" kirjutatav sisu on samuti alati UTF-8 kodeeringus. ");
 		System.out.println();
-		System.out.println("  -unesc_DBS    -- asendab sisendis kahekordsed \\ m2rgid yhekordsetega;");
-		System.out.println("  -pretty_print -- trykib JSON v2ljundi ilusti joondatult;");
+		System.out.println("  -unesc_DBS     -- asendab sisendis kahekordsed \\ m2rgid yhekordsetega;");
+		System.out.println("  -pretty_print  -- trykib JSON v2ljundi ilusti joondatult;");
+		System.out.println("  -ins_comma_mis -- v2iksem tundlikkus komavigade suhtes;");
 		System.out.println();
 	}
 
@@ -62,9 +63,10 @@ public class Main {
 		String inputFile  = null;
 		String outputType = "stdout";
 		String outputFile = null;
-		boolean unescapeDoubleBackSlashes = false;
-		boolean prettyPrintJson           = false;
-		boolean pyVabamorfProcessing      = false;
+		boolean unescapeDoubleBackSlashes  = false;
+		boolean prettyPrintJson            = false;
+		boolean pyVabamorfProcessing       = false;
+		boolean insensitiveToMissingCommas = false;
 		if (args.length > 0){
 			for (int i = 0; i < args.length; i++) {
 				// Kuvame abiinfo
@@ -119,6 +121,9 @@ public class Main {
 					outputType = "file";
 					outputFile = args[i+1];
 				}
+				if (args[i].matches("(?i)(-){1,2}(ins_comma_mis)")){
+					insensitiveToMissingCommas = true;
+				}
 				// Kaigaste \\ muutmine kujule \
 				if (args[i].matches("(?i)(-){1,2}(unesc_DBS)")){
 					unescapeDoubleBackSlashes = true;
@@ -147,7 +152,7 @@ public class Main {
 						//System.out.println(line);
 						//System.out.flush();
 					} else {
-						String result = osalausestaja.osalausestaPyVabamorfJSON(line);
+						String result = osalausestaja.osalausestaPyVabamorfJSON(line, insensitiveToMissingCommas);
 						ps.println( result );
 						ps.flush();
 						//System.out.println(result);
@@ -206,7 +211,7 @@ public class Main {
 		}
 		if (tekstiSonad != null){
 			Osalausestaja ol = new Osalausestaja();
-			margendatudSonad = ol.osalausesta( tekstiSonad ); 
+			margendatudSonad = ol.osalausesta( tekstiSonad, insensitiveToMissingCommas ); 
 		}
 
 		// ==================================================

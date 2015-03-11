@@ -172,5 +172,9 @@ public class MorfTunnusteHulk {
 		}
 		return false;
 	}
+
+	public List<MorfAnRida> getTunnused() {
+		return tunnused;
+	}
 	
 }

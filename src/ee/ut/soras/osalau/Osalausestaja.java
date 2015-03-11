@@ -37,10 +37,17 @@ import ee.ut.soras.wrappers.mudel.MorfAnSona;
 public class Osalausestaja {
 
 	/**
+	 *  <p>
 	 *   Teostab tekstil osalausestamise. Tagastab m2rgenduste listi, kus iga sisendi s6na kohta on 
 	 *  yks m2rgenduste objekt, mille alt saab k2tte nii s6na enda kui sellega seotud m2rgendused.
+	 *  </p>
+	 *  <p>
+	 *   Kui <code>insensitiveToMissingCommas==true</code>, siis pyytakse osalausepiirid m22rata 
+	 *  komavigadest s6ltumatult. St kui leidub osalausepiiri t2histav (side-)s6na, aga puudub koma,
+	 *  pyytakse muude kontekstitunnuste alusel ikkagi tuvastada, kas tegu v6ib olla osalausepiiriga. 
+	 *  </p>
 	 */
-	public List<OsalauSona> osalausesta(List<MorfAnSona> sonad){
+	public List<OsalauSona> osalausesta( List<MorfAnSona> sonad, boolean insensitiveToMissingCommas ){
 		// 0) Loome j2rjendi, kuhu hakatakse panema m2rgendusi
 		List<OsalauSona> osalauSonad = new ArrayList<OsalauSona>( sonad.size() );
 		for (int i = 0; i < sonad.size(); i++) {
@@ -58,7 +65,7 @@ public class Osalausestaja {
 		// 3) Lisame oletuslikud piirid kirjavahemärkide ja ja/ning/ega/või alusel
 		lisaOletuslikudPiirid1( laused );
 		
-		// 4) Märgendame otsese kõne/jutumärkidega soetud osalausepiirid
+		// 4) Märgendame otsese kõne/jutumärkidega seotud osalausepiirid
 		lisaJutum2rkidePiirid( laused );
 		
 		// 5) Jagame teksti juppideks lausepiiride ja osalausepiiride kohalt
@@ -72,6 +79,12 @@ public class Osalausestaja {
 		// 7) Kindlate piiride lisamine #1 - koma/m6ttekriipsu ja j2rgneva k6rvallauset alustava s6na piirid
 		lisaKindladPiirid1( lausedOsalaused );
 		lausedOsalaused = TekstiFiltreerimine.jagaKindlatePiirideKohalt( laused );
+		
+		if (insensitiveToMissingCommas){
+			// 7.2) Proovime kindlaid piire m22rata ilma komadeta
+			PuuduvateKomadeHeur.lisaKindladPiirid1IlmaKomata( lausedOsalaused );
+			lausedOsalaused = TekstiFiltreerimine.jagaKindlatePiirideKohalt( laused );
+		}
 		
 		// 8) Liitoeldiste korrektsioon
 		liitOeldisteKorrektsioon( lausedOsalaused );
@@ -89,7 +102,7 @@ public class Osalausestaja {
 			new EelnevadJargnevadOeldised(osalause, new SonaMall( MARGEND.OLETATAV_PIIR ), true );
 		}
 		lausedOsalaused = TekstiFiltreerimine.jagaKindlatePiirideKohalt( laused );
-
+		
 		// 12) Teisendame osalauseid kiiludeks
 		//     Eemaldame lause l6pust kindlad piirid (kui kogemata on kindlaid piire sattunud lausel6ppu)
 		teisendaKiiludeks( laused, true );
@@ -103,7 +116,7 @@ public class Osalausestaja {
 	 *  v2ljundi peal; N6uab ainult s6ne kujul JSON sisendit ning v2ljastab tulemused samuti ainult 
 	 *  JSON s6ne kujul, peites keerukamad andmestruktuurid;  
 	 */
-	public String osalausestaPyVabamorfJSON( String sisendJSON ) throws Exception {
+	public String osalausestaPyVabamorfJSON( String sisendJSON, boolean insensitiveToMissingCommas ) throws Exception {
 		List<MorfAnSona> tekstiSonad = null;
 		try {
 			BufferedReader inputReader = new BufferedReader( new StringReader(sisendJSON) );
@@ -113,7 +126,7 @@ public class Osalausestaja {
 			e.printStackTrace();
 			System.exit(-1);
 		}
-		List<OsalauSona> margendatudSonad = this.osalausesta( tekstiSonad );		
+		List<OsalauSona> margendatudSonad = this.osalausesta( tekstiSonad, insensitiveToMissingCommas );		
 		return ValjundiVormistaja.vormistaTulemusVabaMorfiJSONkujul( sisendJSON, 
 				margendatudSonad, false);
 	}
@@ -277,7 +290,7 @@ public class Osalausestaja {
 								// Kontrollime, et s6na algaks suurt2hega
 								if (algSona != null && algSona.matches("^[ABCDEFGHIJKLMNOPRS\u0160\u017DTUV\u00D5\u00C4\u00D6\u00DC].*")){
 									(lause.get( i )).lisaMargend( MARGEND.OELDIS );
-								}                        		
+								}
 							}
 						}
 					}
@@ -291,13 +304,13 @@ public class Osalausestaja {
 	 *  K6net alustavad jutum2rgid;<br>
 	 *  TODO: siin saaks neid veel t2psemalt organiseerida 
 	 */
-	private Pattern koneAlgusJutumark = Pattern.compile("^[\"\u00AB\u02EE\u030B\u201C\u201D\u201E].*$");
+	public static Pattern koneAlgusJutumark = Pattern.compile("^[\"\u00AB\u02EE\u030B\u201C\u201D\u201E].*$");
 	
 	/**
 	 *  K6ne l6petavad jutum2rgid;<br>
 	 *  TODO: siin saaks neid veel t2psemalt organiseerida 
 	 */
-	private Pattern koneLoppJutumark  = Pattern.compile("^.*[\"\u00BB\u02EE\u030B\u201C\u201D\u201E]$");
+	public static Pattern koneLoppJutumark  = Pattern.compile("^.*[\"\u00BB\u02EE\u030B\u201C\u201D\u201E]$");
 	
 	/**
 	 *  M2rgistab kõik võimalikud osalausepiiride asukohad: teatud kirjavahemärkide juures ja 
@@ -587,6 +600,7 @@ public class Osalausestaja {
 		}
 	}
 	
+	
 	/**
 	 *   Kindlate piiride lisamine #1 - osalausepiirid k6rvallausetes:<br>
 	 *   ** kui komale/sidekriipsule järgneb vahetult ja|ning|ega|või, märgi kindel piir <br>
@@ -734,7 +748,7 @@ public class Osalausestaja {
 										if (!oeldis.vastabMallileAND(j2rgmSona)){
 											// Kui nud-kesks6na pole veel 8eldis, muudame selle 8eldiseks ...
 											j2rgmSona.lisaMargend( MARGEND.OELDIS );
-											break;											
+											break;
 										}
 									}
 									if ( kindelpiir.vastabMallileAND(j2rgmSona) || 
@@ -748,7 +762,7 @@ public class Osalausestaja {
 								//    1) kui ei arvesta eitusega nud-öeldisi (_V_ neg nud), võib jääda piir 
 								//       määramata, nt lauses:
 								//         Kuid inimesed ei pööranud mulle tähelepanu : ma polnud esimene ega jäänud ka viimaseks .
-								//    2) kui arvestada eitusega nud-öeldisi (_V_ neg nud), või tekkida üleliigne 
+								//    2) kui arvestada eitusega nud-öeldisi (_V_ neg nud), võib tekkida üleliigne 
 								//       piir järgneva omadusõnalise nud-i juurde:
 								//         Aga nüüd polnud mul enam õline ja määrdunud raudteelase vatikuub seljas , vaid Nataša venna vana jope .
 								//    Variant (2) oli ka HJK programmis, praegu jääme ühtluse huvides selle juurde;
@@ -763,6 +777,51 @@ public class Osalausestaja {
 			e.printStackTrace();
 			System.exit(-1);
 		}
+	}
+	
+	/**
+	 *   Kontrollib positsiooni <code>i</code> osalauses <code>osalause</code> ning teeb kindlaks, 
+	 *  kas enne etteantud <code>piir</code>i eelneb ja/v6i j2rgneb sellele positsioonile 8eldis. <br>
+	 *  Tagastab 2-elemendilise massiivi, mille esimene element t2histab eelneva oeldise positsiooni ning 
+	 *  teine element j2rgneva oeldise positsiooni osalauses; kui eelnevat v6i jargnevat 8eldist ei leidu, 
+	 *  siis on vastaval kohal massiivis -1; <br>
+	 *  <br>
+	 *  Kui <code>lubaSonaEnnastEelnevaOeldisena==true</code>, eelnevat oeldist ei leita, aga s6na 
+	 *  positsioonil <code>i</code> on ise oeldis, siis m22rataksegi 'eelneva oeldise' positsiooniks
+	 *  <code>i</code>; 
+	 */
+	public static int [] eelnebJargnebOeldis(List<OsalauSona> osalause, int i, SonaMall piir, 
+											 boolean lubaSonaEnnastEelnevaOeldisena) throws Exception {
+		int [] eelnevJargnevOeldis = new int [2];
+		SonaMall oeldis = new SonaMall( MARGEND.OELDIS );
+		int eelnevOeldis  = TekstiFiltreerimine.eelnebMargendigaSona(osalause,  i, oeldis, piir);
+		int jargnevOeldis = TekstiFiltreerimine.jargnebMargendigaSona(osalause, i, oeldis, piir);
+		if (jargnevOeldis == -1){
+			//  Nyanss:
+			// V6ib juhtuda, et j2rgnevat 8eldist ei leita, kuna 8eldise kyljes on ka (oletatava) piiri 
+			// m2rk ning meetod jargnebMargendigaSona kontrollib enne keelutingimust kui n6utud tingimust, 
+			// ning seega tagastab -1;
+			// Veendumaks, et tegu polnud ylalkirjeldatud juhuga, kontrollime igaks juhuks uuesti 
+			// j2rgnevaid s6nu, aga seekord ilma kitsendusteta:
+			int jargnevOeldis2  = TekstiFiltreerimine.jargnebMargendigaSona(osalause, i, oeldis, null);
+			int jargnevOletatav = TekstiFiltreerimine.jargnebMargendigaSonaOR(osalause, i, piir, null);
+			if (jargnevOeldis2 > -1 && jargnevOeldis2 == jargnevOletatav){
+				// Kui ongi nii, et oeldise ja (oletatava) piiri token langevad kokku (st sisuliselt
+				// on oeldise taga oletatav piir), loeme selle juhuks, kus ka jargneb oeldis
+				jargnevOeldis = jargnevOeldis2;
+			}
+		}
+		if (eelnevOeldis == -1 && lubaSonaEnnastEelnevaOeldisena){
+			//  Nyanss:
+			// kui ainult j2rgneb oeldis, kontrollime igaks juhuks, ega see s6na pole ise 8eldis -
+			// kui on, siis saame ka m2rkida, et tegemist on n8 eelneva 8eldisega ...
+			if ((osalause.get(i)).omabMargendit(MARGEND.OELDIS)){
+				eelnevOeldis = i;
+			}
+		}
+		eelnevJargnevOeldis[0] = eelnevOeldis;
+		eelnevJargnevOeldis[1] = jargnevOeldis;
+		return eelnevJargnevOeldis;
 	}
 	
 	/**
@@ -813,7 +872,6 @@ public class Osalausestaja {
 		 *   piirid, mille m6lemal pool on 8eldis, kindlateks osalausepiirideks.
 		 */
 		public void leiaOtsitavatePiirideEelnevadJargnevadOeldised(List<OsalauSona> osalause, SonaMall otsitavpiir, boolean muudaOletatavadKindlaks){
-			SonaMall oeldis = new SonaMall( MARGEND.OELDIS );
 			try {
 				for (int i = 0; i < osalause.size(); i++) {
 					OsalauSona sona = osalause.get(i);
@@ -822,31 +880,9 @@ public class Osalausestaja {
 					//      salvestame tulemused hilisemaks kasutamiseks paisktabelisse;
 					//
 					if (otsitavpiir.vastabMallileOR(sona)){
-						int eelnevOeldis  = TekstiFiltreerimine.eelnebMargendigaSona(osalause,  i, oeldis, otsitavpiir);
-						int jargnevOeldis = TekstiFiltreerimine.jargnebMargendigaSona(osalause, i, oeldis, otsitavpiir);
-						if (jargnevOeldis == -1){
-							//  Nyanss:
-							// V6ib juhtuda, et j2rgnevat 8eldist ei leita, kuna 8eldise kyljes on ka oletatava piiri 
-							// m2rk ning meetod jargnebMargendigaSona kontrollib enne keelutingimust kui n6utud tingimust, 
-							// ning seega tagastab -1;
-							// Veendumaks, et tegu polnud ylalkirjeldatud juhuga, kontrollime igaks juhuks uuesti 
-							// j2rgnevaid s6nu, aga seekord ilma kitsendusteta:
-							int jargnevOeldis2  = TekstiFiltreerimine.jargnebMargendigaSona(osalause, i, oeldis, null);
-							int jargnevOletatav = TekstiFiltreerimine.jargnebMargendigaSonaOR(osalause, i, otsitavpiir, null);
-							if (jargnevOeldis2 > -1 && jargnevOeldis2 == jargnevOletatav){
-								// Kui ongi nii, et oeldise ja oletatava piiri token langevad kokku (st sisuliselt
-								// on oeldise taga oletatav piir), loeme selle juhuks, kus ka jargneb oeldis
-								jargnevOeldis = jargnevOeldis2;
-							}
-						}
-						if (eelnevOeldis == -1){
-							//  Nyanss:
-							// kui ainult j2rgneb oeldis, kontrollime igaks juhuks, ega see s6na pole ise 8eldis -
-							// kui on, siis saame ka m2rkida, et tegemist on n8 eelneva 8eldisega ...
-							if (sona.omabMargendit(MARGEND.OELDIS)){
-								eelnevOeldis = i; 
-							}
-						}
+						int[] eelnebJargnebOeldis = eelnebJargnebOeldis(osalause, i, otsitavpiir, true);
+						int eelnevOeldis  = eelnebJargnebOeldis[0];
+						int jargnevOeldis = eelnebJargnebOeldis[1];
 						(this.eelnebOeldis).put(i, eelnevOeldis);
 						(this.jargnebOeldis).put(i, jargnevOeldis);
 						if (muudaOletatavadKindlaks && sona.omabMargendit(MARGEND.OLETATAV_PIIR)){
@@ -878,6 +914,7 @@ public class Osalausestaja {
 			}
 			return -1;
 		}
+		
 	}
 	
 	/**
@@ -928,7 +965,7 @@ public class Osalausestaja {
 										(osalause.get(jargnevNing)).asendaMargend(MARGEND.OLETATAV_PIIR, MARGEND.KINDEL_PIIR);
 									}
 								}
-							}							
+							}
 						}
 					}
 					if (oletatavpiir.vastabMallileAND(sona)){
@@ -947,10 +984,10 @@ public class Osalausestaja {
 								//        ... ja teatas , et ole hea , Paabo astu kõrvale .
 								//
 								if (i-1 > -1 && sisaldabT2hteNumbrit.vastabMallileAND(osalause.get(i-1))){
-									(osalause.get(i)).asendaMargend(MARGEND.OLETATAV_PIIR, MARGEND.KINDEL_PIIR);									
+									(osalause.get(i)).asendaMargend(MARGEND.OLETATAV_PIIR, MARGEND.KINDEL_PIIR);
 								}
 							}
-						}						
+						}
 					}
 					if (oletatavpiir.vastabMallileAND(sona)){
 						int eelnevOeldis  = eelnevadJargnevadOeldised.getEelnevaOeldiseIndeks(i);
@@ -967,7 +1004,7 @@ public class Osalausestaja {
 								// eespool siiski on 8eldis:
 								int eelnebOeldisKusagil = TekstiFiltreerimine.eelnebMargendigaSona(osalause, i, oeldis, null);
 								if (eelnebOeldisKusagil > -1){
-									(osalause.get(i)).asendaMargend(MARGEND.OLETATAV_PIIR, MARGEND.KINDEL_PIIR);									
+									(osalause.get(i)).asendaMargend(MARGEND.OLETATAV_PIIR, MARGEND.KINDEL_PIIR);
 								}
 							}
 						}
@@ -1016,7 +1053,7 @@ public class Osalausestaja {
 											//
 										}
 									}
-								}								
+								}
 							}
 							if (jargnebKomaga > -1 && jargnebKomaga+1 < osalause.size()){
 								//
@@ -1164,9 +1201,9 @@ public class Osalausestaja {
 						if (i + 1 < osalause.size()){
 							teiseSonaTunnused = new MorfTunnusteHulk( osalause.get(i+1) );
 						}
-						// 
+						//
 						//    Kui m6lemal pool piiri on yhesuguses k22ndes/pöördes s6na, on potentsiaalselt tegu 
-						///  loeteluga ning v6ime oletatava osalausepiiri eemaldada;
+						//   loeteluga ning v6ime oletatava osalausepiiri eemaldada;
 						//
 						if ( esimeseSonaTunnused != null && teiseSonaTunnused != null ){
 							if (esimeseSonaTunnused.formNamesFromFirstAnalysesMatch( teiseSonaTunnused )){
@@ -1233,7 +1270,7 @@ public class Osalausestaja {
 									//  komadevahelise osa kiiluks ...
 									if (jargnevOeldis2 == j2rgmKindel + 1){
 										if (ainultKomaga.vastabMallileAND(sona)){
-											// Kui koma oli esimesest s6nast eraldi, muudame komal kindla piiri kiilualguseks											
+											// Kui koma oli esimesest s6nast eraldi, muudame komal kindla piiri kiilualguseks
 											sona.asendaMargend(MARGEND.KINDEL_PIIR, MARGEND.KIILU_ALGUS);
 										} else {
 											// Kui esimese s6na l6pus oli vahetult koma, tuleb kiilualgus p2rast s6na.
