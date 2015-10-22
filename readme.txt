@@ -56,7 +56,7 @@
    Using the program
 =========================
 
-    Regular usage
+    Basic usage
    ---------------
    Before the clause segmenter can be applied on a text, a number of 
   text preprocessing steps must be made: text must be split into 
@@ -97,8 +97,8 @@
         https://github.com/Filosoft/vabamorf 
 
 
-    "Insensitive to missing commas" mode
-   --------------------------------------
+    The "insensitive to missing commas" mode
+   -------------------------------------------
     The clause segmenter can also be executed in the mode in which the program 
    attempts to be less sensitive to missing commas while detecting clause boundaries. 
    
@@ -106,10 +106,11 @@
     
      java -jar Osalau.jar -in file example_input_missing_commas.json -pretty_print -ins_comma_mis
    
-    Note that this mode is experimental and some of its heuristics can produce
-   incorrect clause boundary annotations. It is therefore not advisable to use this
-   mode as a default processing mode, especially when it is known beforehand that the 
-   input text likely does not contain missing commas.
+    (the file "example_input_missing_commas.json" can be found in the folder "test");
+    
+     Note that this mode is experimental and compared to the default mode, it can 
+   introduce additional incorrect clause boundaries, although it also improves clause 
+   boundary detection in texts with (a lot of) missing commas.
    
 ============================
    Interpreting the output
