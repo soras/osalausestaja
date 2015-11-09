@@ -19,7 +19,7 @@
    Requirements
 =========================
  For building the program (JAR file):
-  ** Java JDK 1.7.0_02 (at least version 1.7.x is expected);
+  ** Java JDK (at least version 1.7.x is expected);
   ** Apache Ant (at least version 1.8.2);
   
  For using the program:
@@ -27,10 +27,11 @@
   ** A word tokenizer;
   ** Estonian morphological analyzer, possible options:
      -- Filosoft Vabamorf: https://github.com/Filosoft/vabamorf
-     -- PyVabamorf:        https://github.com/tpetmanson/pyvabamorf
+     -- PyVabamorf:        https://github.com/estnltk/pyvabamorf
      -- T3MESTA (a commercial morphological analyzer);
   ** Estonian morphological disambiguator;
-     (currently not freely available)
+     -- Vabamorf's disambiguator: 
+        https://github.com/Filosoft/vabamorf
      NB! The clause segmenter also works on morphologically ambiguous 
         input, but the quality of the analysis is expected to be worse 
         than in the case of morphologically disambiguated text.
@@ -64,7 +65,7 @@
   analysed (and disambiguated).
    Core of these functionalities is provided by EstNLTK toolkit, so the 
   easiest way to use the clause segmenter is within this toolkit ( see 
-  https://github.com/tpetmanson/estnltk   for more details ).
+  https://github.com/estnltk/estnltk   for more details ).
 
    It is expected that the input of the clause segmenter is in the same 
   format as the output of Vabamorf's command 'etana analyze' - a JSON 

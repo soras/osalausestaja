@@ -1,7 +1,6 @@
 
- Libraries, that Osalausestaja currently depends on, and their 
+ Libraries that Osalausestaja currently depends on, and their 
  respective licenses:
-
 
   javax.json-1.0.4.jar
   web page: https://jsonp.java.net/
@@ -9,15 +8,4 @@
             * GNU General Public License (GPL - Version 2, June 1991) with the Classpath Exception
             https://jsonp.java.net/license.html
 
-
-  hamcrest-core-1.3.jar
-  web page: http://hamcrest.org/JavaHamcrest/
-  license:  * The BSD 3-Clause License
-            http://opensource.org/licenses/BSD-3-Clause
-
-
-  junit-4.11.jar
-  web page: http://junit.org/
-  license:  * Eclipse Public License 1.0
-            http://junit.org/license.html
 
