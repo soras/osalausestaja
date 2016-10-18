@@ -19,7 +19,7 @@
    Requirements
 =========================
  For building the program (JAR file):
-  ** Java JDK (at least version 1.7.x is expected);
+  ** Java JDK (at least version 1.8.x is expected);
   ** Apache Ant (at least version 1.8.2);
   
  For using the program:
@@ -33,7 +33,7 @@
      -- Vabamorf's disambiguator: 
         https://github.com/Filosoft/vabamorf
      NB! The clause segmenter also works on morphologically ambiguous 
-        input, but the quality of the analysis is expected to be worse 
+        input, but the quality of the analysis is expected to be lower 
         than in the case of morphologically disambiguated text.
 
 =========================

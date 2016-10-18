@@ -53,7 +53,7 @@
     <!-- Kompileerime ${src} kaustas paikneva l2htekoodi, paigutame
          tulemuse kausta ${build} -->
     <!-- reanumbrid erindis: debug="on" debuglevel="lines,vars,source" -->
-    <javac debug="on" debuglevel="lines,vars,source" includeantruntime="false" target="1.7" source="1.7" srcdir="${src}" destdir="${build}" 
+    <javac debug="on" debuglevel="lines,vars,source" includeantruntime="false" target="1.8" source="1.8" srcdir="${src}" destdir="${build}" 
            fork="yes" executable="${java.home.location}/bin/javac" >
         <compilerarg line="-encoding utf-8"/>
         <classpath>
